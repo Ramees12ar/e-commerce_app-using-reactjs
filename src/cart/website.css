@@ -1,0 +1,11 @@
+.topnav a:hover {
+    border-bottom: 3px solid red;
+}
+
+.nav-item{
+    padding-left: 3px;
+    padding-right: 3px;
+}
+.container{
+    width: 100%;
+}

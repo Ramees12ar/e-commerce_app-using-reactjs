@@ -1,0 +1,30 @@
+.reg{
+    background-color: #bdabab;
+    margin: auto;
+    width: 32%;
+    height: 400px;
+    border-radius: 15px;
+    padding: 20px;
+}
+.label1 {
+    margin: 3px;
+    font-size: 18px;
+    font-weight: bold;
+}
+input {
+    margin: 5px;
+    font-size: 16px;
+    text-align: center;
+    width: 400px;
+    height: 25px;
+    border-radius: 10px;
+}
+button {
+    margin-top: 20px;
+    background-color: green;
+    color:white;
+    border-radius: 10px;
+    width: 100px;
+    height: 30px;
+    border-color: green;
+}
