@@ -6,6 +6,7 @@ import Register from './component/cart/Register';
 import Login from './component/cart/login';
 import Page from './component/cart/website';
 import { BrowserRouter as Router,Redirect, Route, Link, Switch } from 'react-router-dom';
+import Items from './component/cart/addItems';
 function App() {
   return (
     <Router>
@@ -28,9 +29,12 @@ function App() {
                             <a class="nav-link" href="#">Contact</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="#"><Link to="/items">Add items</Link></a>
+                        </li>
+                        <li class="nav-item">
                             <Link to="/cart"><img style={{width:"35px",height:"30px",marginTop:"5px",
                                 paddingLeft:"3px",paddingRight:"3px"}} src={cart} />
-                                <span className="dot cart_background">1</span>
+                                <span className="dot cart_background">15</span>
                             </Link>
                         </li>
                         <li class="nav-item">
@@ -59,6 +63,7 @@ function App() {
                 <Route exact path='/home' component={Home} />
                 <Route exact path='/login' component={Login} />
                 <Route exact path='/register' component={Register} />
+                <Route exact path='/items' component={Items} />
                 <Route exact path='/cart' component={Page} />
                 
             </Switch>

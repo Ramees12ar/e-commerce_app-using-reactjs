@@ -12,6 +12,14 @@
   }
 }
 
+#red{
+  color: red;
+  margin-left: 2px;
+}
+#green{
+  color: green;
+  margin-left: 2px;
+}
 .cart_background {
   padding: 2px;
   margin-right: 3px;
