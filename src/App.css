@@ -12,6 +12,12 @@
   }
 }
 
+.cart_background {
+  padding: 2px;
+  margin-right: 3px;
+  background-color:white;
+  border-radius:100%;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
