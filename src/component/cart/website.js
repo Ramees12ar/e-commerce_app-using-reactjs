@@ -4,15 +4,28 @@ function Page() {
   var cartData=new Array();
   var str = localStorage.getItem("cartData");
   if(str != null){
-      str = JSON.parse(str);
-      for(var i=0;i<str.length;i++){
-          cartData.push({
-              id: i,
-              name: str[i].name,
-              disc: str[i].disc,
-              image: str[i].image,
-              rate: str[i].rate
-          })
+      var userCred=JSON.parse(localStorage.getItem("logCred"))
+      var getting = userCred.filter(function (id,index) {
+          return(userCred[index].status === "active")
+      })
+      if(getting.length===0){
+        alert("please login...");
+      }
+      else{
+        str = JSON.parse(str);
+        var newStr = str.filter(function (id,index) {
+          return(str[index].user === getting[0].name)
+        })
+        console.log(newStr);
+        for(var i=0;i<newStr.length;i++){
+            cartData.push({
+                id: i,
+                name: str[i].name,
+                disc: str[i].disc,
+                image: str[i].image,
+                rate: str[i].rate
+            })
+        }
       }
   }
     return (

@@ -8,18 +8,22 @@ import Page from './component/cart/website';
 import { BrowserRouter as Router,Redirect, Route, Link, Switch } from 'react-router-dom';
 import Items from './component/cart/addItems';
 function Header() {
+    var val;
     var view;
     var view2="active";
     var name;
     var logCred=(localStorage.getItem("logCred"));
     if(logCred != null){
-        logCred=JSON.parse(logCred);
+        var logCr=JSON.parse(logCred);
     }
-    var getting = logCred.filter(function (id,index) {
-            if(logCred[index].status === "active"){
+    else{
+        logCr=new Array();
+    }
+    var getting = logCr.filter(function (id,index) {
+            if(logCr[index].status === "active"){
                 view="active"
                 view2=''
-                name=logCred[index].name
+                name=logCr[index].name
             }
             else{
                 view='';
@@ -27,12 +31,24 @@ function Header() {
             }
         })
     var Logout= () =>{
-        var getting = logCred.filter(function (id,index) {
-            return(logCred[index].status !== "active")
+        var getting = logCr.filter(function (id,index) {
+            return(logCr[index].status !== "active")
         })
         localStorage.setItem("logCred",JSON.stringify(getting));
         alert("successfully logOuted");
         window.location.reload();
+    }
+    var str = localStorage.getItem("cartData");
+    if(str !=null){
+        str = JSON.parse(str);
+        var newStr = str.filter(function (id,index) {
+          return(str[index].user === name)
+        })
+        console.log(newStr.length);
+        val=newStr.length;
+    }
+    else{
+        val =0;
     }
   return (
     <Router>
@@ -59,8 +75,8 @@ function Header() {
                         </li>
                         <li class="nav-item">
                             <Link to="/cart"><img style={{width:"35px",height:"30px",marginTop:"5px",
-                                paddingLeft:"3px",paddingRight:"3px"}} src={cart} />
-                                <span className="dot cart_background">0</span>
+                                paddingLeft:"3px",paddingRight:"3px",fontWeight:"bold"}} src={cart} />
+                                <span className="dot cart_background">{val}</span>
                             </Link>
                         </li>
                         <li class="nav-item">

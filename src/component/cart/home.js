@@ -32,6 +32,11 @@ function Home() {
         }
     }
     var addCart = (id) =>{
+        var userCred=JSON.parse(localStorage.getItem("logCred"))
+        var getting = userCred.filter(function (id,index) {
+            return(userCred[index].status === "active")
+        })
+        console.log(getting);
         var addtoCart= new Array();
         var add = (localStorage.getItem("cartData"));
         if(add != null){
@@ -39,6 +44,7 @@ function Home() {
         }
         var str = JSON.parse(localStorage.getItem("itemList"));
         addtoCart.push({
+            user: getting[0].name,
             name: str[id].name,
             disc: str[id].disc,
             image: str[id].image,

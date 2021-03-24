@@ -18,7 +18,7 @@ function Items() {
             rate: itemRate
         });
         localStorage.setItem("itemList",JSON.stringify(item));
-        setItemLink('');setItemName('');setItemDisc('');
+        setItemLink('');setItemName('');setItemDisc('');setItemRate('');
     }
 
     return (
