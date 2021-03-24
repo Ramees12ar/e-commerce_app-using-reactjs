@@ -6,15 +6,46 @@ function Register() {
     const [password, setPass] = useState('')
     const [mob, setMob] = useState('')
     const [user,setUser] = useState('')
+    const [unique, setUn] = useState('available')
+    const [color, setCo] = useState('')
     var letters = /^[A-Za-z]+$/;
     var emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     var mobPattern = /^\d{10}$/
     var passVal =/^[A-Za-z]\w{7,14}$/;
+    var userName = (e) => {
+        var str=localStorage.getItem("localData");
+        var data = e.target.value
+        setUser(data);
+        if(str !== null){
+            str = JSON.parse(str);
+            if(data.length < 5){
+                setCo("red")
+                setUn("must be greater than 5 char");
+                return;
+            }
+            let logData = str.filter(function (id,index) {
+                var b=str[index].user;
+                return (b.includes(data)===true)
+            })
+            if(logData.length ===0){
+                setCo("green")
+                setUn("available");
+            }
+            else{
+                setCo("red")
+                setUn("not available");
+            }
+        }
+        
+    }
     async function dataSubmit() {
         if((name.match(letters)) && (emailPattern.test(email)) && 
-            (mob.match(mobPattern)) && (user.match(letters)) && (passVal.test(password))){
+            (mob.match(mobPattern)) && (user.match(letters)) && (user.length > 5)
+            && (unique == "available") && (passVal.test(password))){
             //pushing the collected data to array
             //console.log(name,email,mob,password);
+            setCo('');
+            setUn('');
             var str=await (localStorage.getItem("localData"));
             if(str != null){
                 var fetchData= JSON.parse(str);
@@ -46,11 +77,14 @@ function Register() {
             else if(((!user.match(letters)) || user==null)){
                 alert("please enter valid username")
             }
+            else if((user.length > 5) || (unique !== "available")){
+                alert("username already exist or less than 5 length");
+            }
             else if(!(passVal.test(password)) || password==null) {
                 alert("password must be 7 or more characters")
             }
         }
-        
+        setCo('');setEmail('');setMob('');setName('');setPass('');setUn('');setUser('');
     }
     return (
     <div>
@@ -70,7 +104,7 @@ function Register() {
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" 
+                                <input type="text" value={name} class="form-control" 
                                     onChange={e => setName(e.target.value)} placeholder="Full Name" 
                                     aria-label="Name" aria-describedby="basic-addon1" />
                             </div>
@@ -80,7 +114,7 @@ function Register() {
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                                 </div>
-                                <input type="email" class="form-control" 
+                                <input type="email" value={email} class="form-control" 
                                     onChange={e => setEmail(e.target.value)} placeholder="Email" 
                                     aria-label="Email" aria-describedby="basic-addon1" />
                             </div>
@@ -90,7 +124,7 @@ function Register() {
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" 
+                                <input type="text" value={mob} class="form-control" 
                                     onChange={e => setMob(e.target.value)} placeholder="+91 *******" 
                                     aria-label="Mob" aria-describedby="basic-addon1" />
                             </div>
@@ -100,9 +134,10 @@ function Register() {
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><i class="fa fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" 
-                                    onChange={e => setUser(e.target.value)} placeholder="Username" 
+                                <input type="text" value={user} class="form-control" 
+                                    onChange={userName} placeholder="Username" 
                                     aria-label="Username" aria-describedby="basic-addon1" />
+                                    <span id={color}>{unique}</span>
                             </div>
 
                             <label class="sr-only" for="Password">Password</label>
@@ -110,7 +145,7 @@ function Register() {
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon2"><i class="fa fa-key"></i></span>
                                 </div>
-                                <input id="Password" type="password" class="form-control" 
+                                <input id="Password" value={password} type="password" class="form-control" 
                                     onChange={e => setPass(e.target.value)} placeholder="Password" 
                                     aria-label="Password" aria-describedby="basic-addon2" />
                             </div>

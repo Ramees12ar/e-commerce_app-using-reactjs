@@ -1,20 +1,35 @@
 import React from 'react';
 import './websites.css';
 function Page() {
+  var cartData=new Array();
+  var str = localStorage.getItem("cartData");
+  if(str != null){
+      str = JSON.parse(str);
+      for(var i=0;i<str.length;i++){
+          cartData.push({
+              id: i,
+              name: str[i].name,
+              disc: str[i].disc,
+              image: str[i].image,
+              rate: str[i].rate
+          })
+      }
+  }
     return (
         <section>
           <div class="row">
             <div class="col-lg-8">
               <div class="card wish-list mb-3">
                 <div class="card-body">
-        
                   <h5 class="mb-4">Cart (<span>1</span> items)</h5>
-        
+                  {
+                  cartData.map( (i,index) => {
+                    return (
                   <div class="row mb-4">
                     <div class="col-md-5 col-lg-3 col-xl-3">
                       <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
                         <img class="img-fluid w-100"
-                          src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg" 
+                          src={i.image} 
                             alt="Sample" />
                       </div>
                     </div>
@@ -22,10 +37,8 @@ function Page() {
                       <div>
                         <div class="d-flex justify-content-between">
                           <div>
-                            <h5>Blue denim shirt</h5>
-                            <p class="mb-3 text-muted text-uppercase small">Shirt - blue</p>
-                            <p class="mb-2 text-muted text-uppercase small">Color: blue</p>
-                            <p class="mb-3 text-muted text-uppercase small">Size: M</p>
+                            <h5>{i.name}</h5>
+                            <p class="mb-3 text-muted text-uppercase small w-100">{i.disc}</p>
                           </div>
                           <div>
                             <div class="def-number-input number-input safari_only mb-0 w-100">
@@ -33,7 +46,7 @@ function Page() {
                                 <button class="btn btn-white btn-minuse" type="button">-</button>
                               </span>
                               <input type="text" class="m-1 add-color text-center" 
-                                maxlength="3" value="1" style={{width:"150px"}} />
+                                maxlength="3" value="1" style={{width:"100px"}} />
                               <span class="input-group-btn">
                                 <button class="btn btn-red btn-pluss" type="button">+</button>
                               </span>
@@ -47,20 +60,20 @@ function Page() {
                           <div>
                             <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3"><i
                                 class="fas fa-trash-alt mr-1"></i> Remove item </a>
-                            <a href="#!" type="button" class="card-link-secondary small text-uppercase"><i
-                                class="fas fa-heart mr-1"></i> Move to wish list </a>
                           </div>
-                          <p class="mb-0"><span><strong>$17.99</strong></span></p>
+                          <p class="mb-0"><span><strong>{i.rate}₹</strong></span></p>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <hr class="mb-4" />
+                      )
+                    })
+                  }
+                  <hr class="mb-4"/>
                 </div>
               </div>
             </div>
             <div class="col-lg-4">
-        
               <div class="card mb-3">
                 <div class="card-body">
         

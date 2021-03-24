@@ -9,10 +9,14 @@ function Login() {
     var Login = () => {
         if((lname.match(letters)) && (passVal.test(lpass))){
             var dbReg = JSON.parse(localStorage.getItem("localData"));
+            console.log(dbReg);
             let logData = dbReg.filter(function (id,index) {
+                console.log(lname+" "+lpass);
+                console.log(dbReg[index].user+" "+dbReg[index].passw)
                 if(dbReg[index].user === lname && dbReg[index].passw=== lpass){
-                    // console.log("correect");
-                   return 1;
+                    var Log= localStorage.getItem("logCred");
+                    
+                    alert("login success");
                 }
             });
             console.log(logData.length);

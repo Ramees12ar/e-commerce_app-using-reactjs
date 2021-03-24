@@ -10,11 +10,11 @@ function Homelogin() {
             var dbReg = JSON.parse(localStorage.getItem("localData"));
             let logData = dbReg.filter(function (id,index) {
                 if(dbReg[index].user === lname && dbReg[index].passw=== lpass){
-                    // console.log("correect");
-                   return 1;
+                    alert("login success");
+                    addLog();
+                    return id
                 }
             });
-            console.log(logData.length);
             if(logData.length != 1){
                 alert("please check username and password");
             }
@@ -24,6 +24,27 @@ function Homelogin() {
         }
         else if(!(passVal.test(lpass)) || lpass==null) {
             alert("please enter password")
+        }
+    }
+    var addLog=() =>{
+        var log=new Array();
+        var logD= localStorage.getItem("logCred");
+        if(logD != null){
+            log=JSON.parse(logD)
+        }
+        let logData = log.filter(function (id,index){
+            return(log[index].name === lname)
+        })
+        console.log(logData.length);
+        if(logData.length ===0){
+            log.push({
+                name: lname,
+                passw: lpass,
+                status: "active"
+            })
+            console.log(log);
+            localStorage.setItem("logCred",JSON.stringify(log));
+            window.location.reload();
         }
     }
     return (
