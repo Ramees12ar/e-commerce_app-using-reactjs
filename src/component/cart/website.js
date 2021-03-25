@@ -1,42 +1,114 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './websites.css';
+import Header from '../../header';
 function Page() {
-  var cartData=new Array();
+  var ind=[];
+  const [newTotal,setTotal] = useState(0)
+  useEffect(() =>{
+    totalRate();
+  },0)
+  function totalRate(){
+    var logCr=JSON.parse(localStorage.getItem("logCred"));
+    var getting = logCr.filter(function (id,index) {
+      return(logCr[index].status === "active")
+    })
+    var str = JSON.parse(localStorage.getItem("cartData"));
+    var newcart = str.filter(function (id,index) {
+        return (str[index].user===getting[0].name)
+    })
+    var newTotal = newcart.reduce((prev,item1) => {
+      return prev + (item1.rate * item1.count)
+    },0)
+    setTotal(newTotal);
+  }
   var str = localStorage.getItem("cartData");
-  if(str != null){
+  var removeItem = (i) =>{
+      var str = JSON.parse(localStorage.getItem("cartData"));
+      var newcart = str.filter(function (id,index) {
+        return(str[index].id !== i)
+      })
+      localStorage.setItem("cartData",JSON.stringify(newcart));
+      window.location.reload();
+    }
+
+
+    //Update count of item increment
+  var addCount = (val) => {
+      var countData=[];
+      var str = JSON.parse(localStorage.getItem("cartData"));
+      var newcart = str.map(function (id,index) {
+        if(str[index].id === val){
+              var a=str[index].count;
+              var b=str[index].rate;
+              a+=1;
+              str[index].count=a;
+        }
+        countData.push(str[index])
+      })
+      localStorage.setItem("cartData",JSON.stringify(countData));
+      window.location.reload();
+  }
+
+  //update count of item decriment
+  var subCount = (val) => {
+    var countData=[];
+    var str = JSON.parse(localStorage.getItem("cartData"));
+    var newcart = str.map(function (id,index) {
+      if(str[index].id === val){
+            var a=str[index].count;
+            var b=str[index].rate;
+            a-=1;
+            if(a>=1){str[index].count=a;}      
+      }
+      countData.push(str[index])
+    })
+    localStorage.setItem("cartData",JSON.stringify(countData));
+    window.location.reload();
+}
+
+    if(str != null){
       var userCred=JSON.parse(localStorage.getItem("logCred"))
       var getting = userCred.filter(function (id,index) {
           return(userCred[index].status === "active")
       })
       if(getting.length===0){
-        alert("please login...");
+        count=0;
       }
       else{
         str = JSON.parse(str);
         var newStr = str.filter(function (id,index) {
-          return(str[index].user === getting[0].name)
+          if(str[index].user === getting[0].name){
+            ind.push({ida: index})
+            return id
+          }
         })
-        console.log(newStr);
-        for(var i=0;i<newStr.length;i++){
-            cartData.push({
-                id: i,
-                name: str[i].name,
-                disc: str[i].disc,
-                image: str[i].image,
-                rate: str[i].rate
-            })
-        }
+        var count=newStr.length;
+        var newData=JSON.stringify(newStr);
       }
-  }
+    }
+    var orderCheckout = () => {
+      var logCr=JSON.parse(localStorage.getItem("logCred"));
+      var getting = logCr.filter(function (id,index) {
+        return(logCr[index].status === "active")
+      })
+      var str = JSON.parse(localStorage.getItem("cartData"));
+      var newcart = str.filter(function (id,index) {
+          return (str[index].user!==getting[0].name)
+      })
+      localStorage.setItem("cartData",JSON.stringify(newcart));
+      alert(`Hi ${getting[0].name}, Your order succefully place. Total amount ${newTotal}. Thank you!`)
+      window.location.reload();
+    }
+    if(newData!==null){
     return (
         <section>
           <div class="row">
             <div class="col-lg-8">
               <div class="card wish-list mb-3">
                 <div class="card-body">
-                  <h5 class="mb-4">Cart (<span>1</span> items)</h5>
+                  <h5 class="mb-4">Cart (<span>{count}</span> items)</h5>
                   {
-                  cartData.map( (i,index) => {
+                  newStr.map( (i,index) => {
                     return (
                   <div class="row mb-4">
                     <div class="col-md-5 col-lg-3 col-xl-3">
@@ -56,12 +128,11 @@ function Page() {
                           <div>
                             <div class="def-number-input number-input safari_only mb-0 w-100">
                               <span class="input-group-btn">
-                                <button class="btn btn-white btn-minuse" type="button">-</button>
+                                <button onClick={()=>subCount(i.id)} class="btn btn-white btn-minuse" type="button">-</button>
                               </span>
-                              <input type="text" class="m-1 add-color text-center" 
-                                maxlength="3" value="1" style={{width:"100px"}} />
+                              <input type="text" class="m-1 add-color text-center" min="1" value={i.count} style={{width:"100px"}} />
                               <span class="input-group-btn">
-                                <button class="btn btn-red btn-pluss" type="button">+</button>
+                                <button onClick={()=>{addCount(i.id)}} class="btn btn-red btn-pluss" type="button">+</button>
                               </span>
                             </div>
                             <small id="passwordHelpBlock" class="form-text text-muted text-center">
@@ -71,10 +142,10 @@ function Page() {
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                           <div>
-                            <a href="#!" type="button" class="card-link-secondary small text-uppercase mr-3"><i
-                                class="fas fa-trash-alt mr-1"></i> Remove item </a>
+                            <button onClick={() => {removeItem(i.id)}} type="button" class="card-link-secondary small text-uppercase mr-3"><i
+                                class="fas fa-trash-alt mr-1"></i> Remove item </button>
                           </div>
-                          <p class="mb-0"><span><strong>{i.rate}₹</strong></span></p>
+                          <p class="mb-0"><span><strong>{i.rate * i.count}₹</strong></span></p>
                         </div>
                       </div>
                     </div>
@@ -94,8 +165,8 @@ function Page() {
         
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
-                      Temporary amount
-                      <span>$25.98</span>
+                      Total amount
+                      <span>{newTotal}₹</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                       Shipping
@@ -108,11 +179,11 @@ function Page() {
                           <p class="mb-0">(including VAT)</p>
                         </strong>
                       </div>
-                      <span><strong>$53.98</strong></span>
+                      <span><strong>{newTotal}₹</strong></span>
                     </li>
                   </ul>
         
-                  <button type="button" class="btn btn-primary btn-block waves-effect waves-light">go to checkout</button>
+                  <button type="button" onClick={orderCheckout} class="btn btn-primary btn-block waves-effect waves-light">go to checkout</button>
         
                 </div>
               </div>
@@ -120,5 +191,11 @@ function Page() {
           </div>
         </section>
     )
+  }
+  else{
+    return (
+      <h2>No data available</h2>
+      )
+    }
 }
 export default Page;

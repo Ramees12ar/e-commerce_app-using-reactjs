@@ -21,15 +21,15 @@ function Home() {
     var str = localStorage.getItem("itemList");
     if(str != null){
         str = JSON.parse(str);
-        for(var i=0;i<str.length;i++){
-            itemData.push({
-                id: i,
-                name: str[i].name,
-                disc: str[i].disc,
-                image: str[i].image,
-                rate: str[i].rate
-            })
-        }
+        // for(var i=0;i<str.length;i++){
+        //     itemData.push({
+        //         id: i,
+        //         name: str[i].name,
+        //         disc: str[i].disc,
+        //         image: str[i].image,
+        //         rate: str[i].rate
+        //     })
+        // }
     }
     var addCart = (id) =>{
         var userCred=JSON.parse(localStorage.getItem("logCred"))
@@ -44,13 +44,16 @@ function Home() {
         }
         var str = JSON.parse(localStorage.getItem("itemList"));
         addtoCart.push({
+            id: id,
             user: getting[0].name,
             name: str[id].name,
+            count: 1,
             disc: str[id].disc,
             image: str[id].image,
             rate: str[id].rate
         })
         localStorage.setItem("cartData",JSON.stringify(addtoCart));
+        window.location.reload();
     }
     //console.log(str);
     
@@ -63,7 +66,7 @@ function Home() {
     <div className="container">
         <div className="row">
             {
-            itemData.map( (i,index) => {
+            str.map( (i,index) => {
             return (
             <div className="col-sm">
                   <div class="card" style={{width:"18rem"}}>
@@ -72,7 +75,7 @@ function Home() {
                           <h5 class="card-title">{ i.name }</h5>
                           <p class="card-text">{ i.disc }</p>
                           <p class="card-text" style={{fontWeight:"bold",textAlign:"right"}}>{ i.rate }₹</p>
-                          <button onClick={()=>{addCart(index)}} class="btn btn-primary">Add cart</button>
+                          <button onClick={()=>{addCart(i.id)}} class="btn btn-primary">Add cart</button>
                           {/* modal-id="item" data-toggle="modal" data-target="#myModal" */}
                       </div>
                   </div>

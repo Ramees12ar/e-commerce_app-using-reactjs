@@ -8,7 +8,7 @@ import Page from './component/cart/website';
 import { BrowserRouter as Router,Redirect, Route, Link, Switch } from 'react-router-dom';
 import Items from './component/cart/addItems';
 function Header() {
-    var val;
+    var cartval=0;
     var view;
     var view2="active";
     var name;
@@ -36,19 +36,28 @@ function Header() {
         })
         localStorage.setItem("logCred",JSON.stringify(getting));
         alert("successfully logOuted");
+        cartval=0;
         window.location.reload();
     }
-    var str = localStorage.getItem("cartData");
-    if(str !=null){
-        str = JSON.parse(str);
-        var newStr = str.filter(function (id,index) {
-          return(str[index].user === name)
-        })
-        console.log(newStr.length);
-        val=newStr.length;
+    var getting = logCr.filter(function (id,index) {
+        return(logCr[index].status === "active")
+    })
+    if(getting.length ===1){
+        var str = localStorage.getItem("cartData");
+        if(str !=null){
+            str = JSON.parse(str);
+            var newStr = str.filter(function (id,index) {
+                return(str[index].user === name)
+            })
+            console.log(newStr.length);
+            cartval=newStr.length;
+        }
+        else{
+            cartval=0;
+        }
     }
     else{
-        val =0;
+        cartval =0;
     }
   return (
     <Router>
@@ -76,7 +85,7 @@ function Header() {
                         <li class="nav-item">
                             <Link to="/cart"><img style={{width:"35px",height:"30px",marginTop:"5px",
                                 paddingLeft:"3px",paddingRight:"3px",fontWeight:"bold"}} src={cart} />
-                                <span className="dot cart_background">{val}</span>
+                                <span className="dot cart_background">{cartval}</span>
                             </Link>
                         </li>
                         <li class="nav-item">

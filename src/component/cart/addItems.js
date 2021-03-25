@@ -11,14 +11,20 @@ function Items() {
         if(itemList !== null){
             item = JSON.parse(itemList);
         }
-        item.push({
-            name: itemName,
-            disc: itemDisc,
-            image: itemLink,
-            rate: itemRate
-        });
-        localStorage.setItem("itemList",JSON.stringify(item));
-        setItemLink('');setItemName('');setItemDisc('');setItemRate('');
+        if(itemName !== '' && itemDisc!== '' && itemLink!== '' && itemRate!==''){
+            item.push({
+                id:   item.length,
+                name: itemName,
+                disc: itemDisc,
+                image: itemLink,
+                rate: itemRate
+            });
+            localStorage.setItem("itemList",JSON.stringify(item));
+            setItemLink('');setItemName('');setItemDisc('');setItemRate('');
+        }
+        else{
+            alert("please fill all fields");
+        }
     }
 
     return (

@@ -14,8 +14,6 @@ function Login() {
                 console.log(lname+" "+lpass);
                 console.log(dbReg[index].user+" "+dbReg[index].passw)
                 if(dbReg[index].user === lname && dbReg[index].passw=== lpass){
-                    var Log= localStorage.getItem("logCred");
-                    
                     alert("login success");
                 }
             });
