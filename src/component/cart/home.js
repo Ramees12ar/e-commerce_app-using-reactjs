@@ -31,29 +31,51 @@ function Home() {
         //     })
         // }
     }
+    else{
+        return (
+            <h2>No items available.  Please add items from <b>add items</b></h2>
+        )
+    }
     var addCart = (id) =>{
-        var userCred=JSON.parse(localStorage.getItem("logCred"))
-        var getting = userCred.filter(function (id,index) {
-            return(userCred[index].status === "active")
-        })
-        console.log(getting);
-        var addtoCart= new Array();
-        var add = (localStorage.getItem("cartData"));
-        if(add != null){
-            addtoCart=JSON.parse(add);
+        var userCred=(localStorage.getItem("logCred"));
+        if(userCred.length!==2){
+            userCred=JSON.parse(userCred);
+            var getting = userCred.filter(function (id,index) {
+                return(userCred[index].status === "active")
+            })
+            console.log(getting);
+            var addtoCart= new Array();
+            var add = (localStorage.getItem("cartData"));
+            if(add != null){
+                add=JSON.parse(add);
+                console.log(add);
+                var id1=id
+                var checkCart = add.filter(function (id,index) {
+                    return(add[index].id === id1)
+                })
+            }
+            if(checkCart.length===0){
+                var str = JSON.parse(localStorage.getItem("itemList"));
+                add.push({
+                    id: id,
+                    user: getting[0].name,
+                    name: str[id].name,
+                    count: 1,
+                    disc: str[id].disc,
+                    image: str[id].image,
+                    rate: str[id].rate
+                })
+                localStorage.setItem("cartData",JSON.stringify(add));
+                window.location.reload();
+            }
+            else{
+                alert("Item already in cart");
+            }
         }
-        var str = JSON.parse(localStorage.getItem("itemList"));
-        addtoCart.push({
-            id: id,
-            user: getting[0].name,
-            name: str[id].name,
-            count: 1,
-            disc: str[id].disc,
-            image: str[id].image,
-            rate: str[id].rate
-        })
-        localStorage.setItem("cartData",JSON.stringify(addtoCart));
-        window.location.reload();
+        else {
+            alert("please login...")
+        }
+            
     }
     //console.log(str);
     

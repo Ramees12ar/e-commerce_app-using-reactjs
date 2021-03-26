@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router} from 'react-router-dom';
+import { BrowserRouter as Router,Route, Link, Switch} from 'react-router-dom';
+import Home from './home';
 function Items() {
     const [itemName, setItemName] = useState('')
     const [itemDisc, setItemDisc] = useState('')
@@ -73,12 +74,11 @@ function Items() {
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary" onClick={addItem} >Add</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger">Close</button>
                         </div>
 
                     </div>
                 </div>
-
         </Router>
     )
 }

@@ -1,25 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import './websites.css';
-import Header from '../../header';
 function Page() {
   var ind=[];
+  var count;
   const [newTotal,setTotal] = useState(0)
   useEffect(() =>{
     totalRate();
   },0)
   function totalRate(){
-    var logCr=JSON.parse(localStorage.getItem("logCred"));
-    var getting = logCr.filter(function (id,index) {
-      return(logCr[index].status === "active")
-    })
-    var str = JSON.parse(localStorage.getItem("cartData"));
-    var newcart = str.filter(function (id,index) {
-        return (str[index].user===getting[0].name)
-    })
-    var newTotal = newcart.reduce((prev,item1) => {
-      return prev + (item1.rate * item1.count)
-    },0)
-    setTotal(newTotal);
+    var logCr=(localStorage.getItem("logCred"));
+    if(logCr.length!==2){
+      console.log("hi");
+      logCr=JSON.parse(logCr);
+      var getting = logCr.filter(function (id,index) {
+        return(logCr[index].status === "active")
+      })
+      var str = JSON.parse(localStorage.getItem("cartData"));
+      var newcart = str.filter(function (id,index) {
+          return (str[index].user===getting[0].name)
+      })
+      var newTotal = newcart.reduce((prev,item1) => {
+        return prev + (item1.rate * item1.count)
+      },0)
+      setTotal(newTotal);
+    }
+    else{
+      <h2>Please Login first</h2>
+    }
+    // else{
+    //   return(
+    //     <h2>Cart is empty. Please login...</h2>
+    //   )
+    // }
   }
   var str = localStorage.getItem("cartData");
   var removeItem = (i) =>{
@@ -64,28 +76,50 @@ function Page() {
     })
     localStorage.setItem("cartData",JSON.stringify(countData));
     window.location.reload();
-}
-
-    if(str != null){
-      var userCred=JSON.parse(localStorage.getItem("logCred"))
-      var getting = userCred.filter(function (id,index) {
+  }
+  var userCred=(localStorage.getItem("logCred"))
+  if(userCred.length!==2){
+    var str = JSON.parse(localStorage.getItem("cartData"));
+    if(str !== null){
+      var userCred=(localStorage.getItem("logCred"))
+      if(userCred!==null){
+        userCred=JSON.parse(userCred);
+        var getting = userCred.filter(function (id,index) {
           return(userCred[index].status === "active")
-      })
-      if(getting.length===0){
-        count=0;
-      }
-      else{
-        str = JSON.parse(str);
-        var newStr = str.filter(function (id,index) {
-          if(str[index].user === getting[0].name){
-            ind.push({ida: index})
-            return id
-          }
         })
-        var count=newStr.length;
-        var newData=JSON.stringify(newStr);
+        if(getting.length===0){
+          count=0;
+        }
+        else{
+          var str = JSON.parse(localStorage.getItem("cartData"));
+          var newStr = str.filter(function (id,index) {
+            if(str[index].user === getting[0].name){
+              ind.push({ida: index})
+              return id
+            }
+          })
+          if(newStr.length>=0){
+            count=(newStr.length);
+          }
+          else{
+            count=0;
+          }
+          var newData=JSON.stringify(newStr);
+        }
       }
     }
+    else{
+      alert("logouted");
+    }
+    console.log(newStr);
+
+  }
+  else{
+    return(
+      <h2>Please Login first</h2>
+    )
+  }
+  
     var orderCheckout = () => {
       var logCr=JSON.parse(localStorage.getItem("logCred"));
       var getting = logCr.filter(function (id,index) {
@@ -99,7 +133,6 @@ function Page() {
       alert(`Hi ${getting[0].name}, Your order succefully place. Total amount ${newTotal}. Thank you!`)
       window.location.reload();
     }
-    if(newData!==null){
     return (
         <section>
           <div class="row">
@@ -191,11 +224,5 @@ function Page() {
           </div>
         </section>
     )
-  }
-  else{
-    return (
-      <h2>No data available</h2>
-      )
-    }
 }
 export default Page;

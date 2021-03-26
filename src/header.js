@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import cart from  './component/images/cart.png'
-import Home from './component/cart/home';
+import cart from  './component/images/cart.png';
 import Register from './component/cart/Register';
 import Login from './component/cart/login';
 import Page from './component/cart/website';
 import { BrowserRouter as Router,Redirect, Route, Link, Switch } from 'react-router-dom';
 import Items from './component/cart/addItems';
+import Home from './component/cart/home';
 function Header() {
     var cartval=0;
     var view;

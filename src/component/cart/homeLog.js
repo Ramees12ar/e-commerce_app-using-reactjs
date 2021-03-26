@@ -7,22 +7,32 @@ function Homelogin() {
     var passVal =/^[A-Za-z]\w{7,14}$/;
     var Login = () => {
         if((lname.match(letters)) && (passVal.test(lpass))){
-            var dbReg = JSON.parse(localStorage.getItem("localData"));
-            let logData = dbReg.filter(function (id,index) {
-                if(dbReg[index].user === lname && dbReg[index].passw=== lpass){
-                    alert("login success");
-                    addLog();
-                    return id
-                }
-            });
-            if(logData.length != 1){
-                alert("please check username and password");
+            var dbReg = (localStorage.getItem("localData"));
+            if(dbReg!==null){
+                dbReg=JSON.parse(dbReg);
+                let logData = dbReg.filter(function (id,index) {
+                    if(dbReg[index].user === lname && dbReg[index].passw=== lpass){
+                        alert("login success");
+                        addLog();
+                        return id
+                    }
+                });
+                if(logData.length != 1){
+                    setLname('');setLpass('');
+                    alert("please check username and password");
+                } 
+            }
+            else{
+                setLname('');setLpass('');
+                alert("please register");
             }
         }
         else if(((!lname.match(letters)) || lname==null)){
+            setLname('');setLpass('');
             alert("please enter valid username")
         }
         else if(!(passVal.test(lpass)) || lpass==null) {
+            setLname('');setLpass('');
             alert("please enter password")
         }
     }
