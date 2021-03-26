@@ -59,6 +59,85 @@ function Header() {
     else{
         cartval =0;
     }
+
+    //item adding initially
+    var item=[{
+        id:0,
+        name: "T-shirt1",
+        disc:"A T-shirt, or tee shirt, is a style of fabric shirt named after the T shape of its body and sleeves. Traditionally, it has short sleeves and a round neckline, known as a crew neck, which lacks a collar.",
+        image: "https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg",
+        rate: 360
+        },
+        {
+            id:1,
+            name: "T-shirt2",
+            disc:"A T-shirt, or tee shirt, is a style of fabric shirt named after the T shape of its body and sleeves. Traditionally, it has short sleeves and a round neckline, known as a crew neck, which lacks a collar.",
+            image: "https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg",
+            rate: 460
+        },
+        {
+            id:2,
+            name: "T-shirt3",
+            disc:"A T-shirt, or tee shirt, is a style of fabric shirt named after the T shape of its body and sleeves. Traditionally, it has short sleeves and a round neckline, known as a crew neck, which lacks a collar.",
+            image: "https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14a.jpg",
+            rate: 180
+        },
+	    {
+            id:3,
+            name: "T-shirt4",
+            disc:"A T-shirt, or tee shirt, is a style of fabric shirt named after the T shape of its body and sleeves. Traditionally, it has short sleeves and a round neckline, known as a crew neck, which lacks a collar.",
+            image: "https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg",
+            rate: 740
+        },
+	    {
+            id:4,
+            name: "T-shirt5",
+            disc:"A T-shirt, or tee shirt, is a style of fabric shirt named after the T shape of its body and sleeves. Traditionally, it has short sleeves and a round neckline, known as a crew neck, which lacks a collar.",
+            image: "https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg",
+            rate: 410
+        },
+	    {
+            id:5,
+            name: "T-shirt6",
+            disc:"A T-shirt, or tee shirt, is a style of fabric shirt named after the T shape of its body and sleeves. Traditionally, it has short sleeves and a round neckline, known as a crew neck, which lacks a collar.",
+            image: "https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14a.jpg",
+            rate: 179
+        },
+	    {
+            id:6,
+            name: "T-shirt7",
+            disc:"A T-shirt, or tee shirt, is a style of fabric shirt named after the T shape of its body and sleeves. Traditionally, it has short sleeves and a round neckline, known as a crew neck, which lacks a collar.",
+            image: "https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12a.jpg",
+            rate: 879
+        },
+	    {
+            id:7,
+            name: "T-shirt8",
+            disc:"A T-shirt, or tee shirt, is a style of fabric shirt named after the T shape of its body and sleeves. Traditionally, it has short sleeves and a round neckline, known as a crew neck, which lacks a collar.",
+            image: "https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15a.jpg",
+            rate: 999
+        },
+	    {
+            id:8,
+            name: "T-shirt9",
+            disc:"A T-shirt, or tee shirt, is a style of fabric shirt named after the T shape of its body and sleeves. Traditionally, it has short sleeves and a round neckline, known as a crew neck, which lacks a collar.",
+            image: "https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13a.jpg",
+            rate: 599
+        }
+    ]
+    var clctItem=localStorage.getItem("itemList");
+    if(clctItem!=null){
+        clctItem=JSON.parse(clctItem);
+        var newStock = clctItem.filter(function (id,index) {
+            return(clctItem[index].id === 0)
+        })
+        if(newStock.length===0){
+            localStorage.setItem("itemList",JSON.stringify(item));
+        }
+    }
+    else{
+        localStorage.setItem("itemList",JSON.stringify(item));
+    }
   return (
     <Router>
         <div class="cnt2">
